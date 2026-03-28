@@ -9,7 +9,10 @@ import {
   Eye,
   Lock,
   Pill,
+  ScanSearch,
   Search,
+  Send,
+  SlidersHorizontal,
   Sparkles,
 } from 'lucide-react';
 
@@ -53,7 +56,7 @@ const featureCards: CardItem[] = [
 const workflowSteps = [
   {
     title: '把杂乱描述交给 AI',
-    description: '输入“布洛芬 300mg，两盒，明年 3 月到期”或直接拍张包装照，系统会自动生成结构化字段。',
+    description: '输入“布洛芬 300mg，两盒，明年 3 月到期”或直接拍张包装照，OpenMedKit 会自动生成结构化字段录入系统。',
   },
   {
     title: '按家庭视角整理库存',
@@ -65,16 +68,43 @@ const workflowSteps = [
   },
 ];
 
-const heroCapabilities: { text: string; mono?: boolean }[] = [
-  { text: '自然语言录入' },
-  { text: '拍照识别' },
-  { text: '对话式检索' },
-  { text: '分类与筛选' },
-  { text: '过期提醒' },
-  { text: 'SQLite 存储', mono: true },
-  { text: 'Telegram 推送', mono: true },
-  { text: 'OpenAI 兼容', mono: true },
-  { text: '自部署可控' },
+interface HeroCapability {
+  text: string;
+  icon: IconComponent;
+  mono?: boolean;
+}
+
+interface HeroCapabilityGroup {
+  title: string;
+  countLabel: string;
+  tone: 'warm' | 'tech';
+  items: HeroCapability[];
+}
+
+const heroCapabilityGroups: HeroCapabilityGroup[] = [
+  {
+    title: '日常体验',
+    countLabel: '5 项高频能力',
+    tone: 'warm',
+    items: [
+      { text: '自然语言录入', icon: Sparkles },
+      { text: '拍照识别', icon: ScanSearch },
+      { text: '对话式检索', icon: Search },
+      { text: '分类与筛选', icon: SlidersHorizontal },
+      { text: '过期提醒', icon: BellRing },
+    ],
+  },
+  {
+    title: '系统能力',
+    countLabel: '4 项可控特性',
+    tone: 'tech',
+    items: [
+      { text: 'SQLite 存储', icon: Database, mono: true },
+      { text: 'Telegram 推送', icon: Send, mono: true },
+      { text: 'OpenAI 兼容', icon: Bot, mono: true },
+      { text: '自部署可控', icon: Lock, mono: true },
+    ],
+  },
 ];
 
 const deployCards = [
@@ -131,6 +161,23 @@ function Tag({ children }: { children: ReactNode }) {
 
 function BrandMark() {
   return <img className="brand-mark" src="/medkit-icon-rounded.png" alt="" aria-hidden="true" />;
+}
+
+/** X (Twitter) logo — inline SVG for brand-accurate mark */
+function XLogo({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        fill="currentColor"
+        d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+      />
+    </svg>
+  );
 }
 
 /* ---- Animated Add-Medicine Demo ---- */
@@ -394,7 +441,7 @@ export default function App() {
           <a className="brand" href="#top" aria-label="Open MedKit Home">
             <BrandMark />
             <div>
-              <strong>Open MedKit</strong>
+              <strong>OpenMedKit</strong>
               <span>AI 家庭药箱管理工具</span>
             </div>
           </a>
@@ -424,15 +471,14 @@ export default function App() {
             <div className="hero-copy">
               <div className="hero-copy__intro">
                 <Tag>Open-source · Self-hosted · OpenAI Compatible</Tag>
-                <span className="hero-copy__caption">为家庭药箱重做一次库存管理</span>
               </div>
 
               <h1>
-                对着药箱说句话，
-                <span>剩下的交给 AI。</span>
+                <span className="hero-copy__line">对着药箱说句话，</span>
+                <span className="hero-copy__line">剩下的交给 AI。</span>
               </h1>
               <p className="hero-copy__lead">
-                Open MedKit 把家庭药箱管理从“翻抽屉 + 填表单”变成自然对话。你负责描述或拍照，AI
+                OpenMedKit 把家庭药箱管理从“翻抽屉 + 填表单”变成自然对话。你负责描述或拍照，AI
                 负责录入、检索、分类和提醒，让库存状态始终清晰可见。
               </p>
 
@@ -451,12 +497,44 @@ export default function App() {
                 </a>
               </div>
 
-              <div className="hero-caps" aria-label="核心能力">
-                {heroCapabilities.map((cap) => (
-                  <span key={cap.text} className={cap.mono ? 'hero-cap hero-cap--mono' : 'hero-cap'}>
-                    {cap.text}
-                  </span>
-                ))}
+              <div className="hero-cap-panel" aria-label="核心能力">
+                <div className="hero-cap-panel__header">
+                  <span className="hero-cap-panel__eyebrow">核心能力</span>
+                </div>
+
+                <div className="hero-cap-groups">
+                  {heroCapabilityGroups.map((group) => (
+                    <section key={group.title} className={`hero-cap-group hero-cap-group--${group.tone}`}>
+                      <div className="hero-cap-group__header">
+                        <span className="hero-cap-group__title">{group.title}</span>
+                        <span className="hero-cap-group__count">{group.countLabel}</span>
+                      </div>
+
+                      <div className="hero-cap-group__grid">
+                        {group.items.map((item) => {
+                          const Icon = item.icon;
+                          return (
+                            <span
+                              key={item.text}
+                              className={[
+                                'hero-cap',
+                                group.tone === 'tech' ? 'hero-cap--tech' : '',
+                                item.mono ? 'hero-cap--mono' : '',
+                              ]
+                                .filter(Boolean)
+                                .join(' ')}
+                            >
+                              <span className="hero-cap__icon">
+                                <Icon size={16} strokeWidth={1.8} />
+                              </span>
+                              <span className="hero-cap__label">{item.text}</span>
+                            </span>
+                          );
+                        })}
+                      </div>
+                    </section>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -469,7 +547,7 @@ export default function App() {
             <SectionHeading
               eyebrow="Product Highlights"
               title="熟悉的药箱场景，用更聪明的交互方式重做"
-              description="沿用主项目的暖色基调和高信息密度，但首页表达更聚焦，让人一眼就能理解它解决的家庭药箱问题。"
+              description="暖色基调和高信息密度，表达更聚焦，让人一眼就能理解它解决的家庭药箱问题。"
             />
 
             <div className="card-grid">
@@ -494,7 +572,7 @@ export default function App() {
             <SectionHeading
               eyebrow="How It Works"
               title="从一句描述到一整套库存视图，交互链路尽量短"
-              description="首页不只是展示功能，还要让访客快速理解产品体验：少输入、少学习、少遗漏。"
+              description="超级方便的交互链路，让你快速上手使用。"
             />
 
             <div className="workflow-cards">
@@ -514,7 +592,7 @@ export default function App() {
             <SectionHeading
               eyebrow="Setup & Extend"
               title="部署和二次开发都足够直接"
-              description="无论你是想先给家里用起来，还是准备继续扩展模型、通知或界面，都可以从一个清晰的起点开始。"
+              description="无论你是想先给家里用起来，还是准备继续增加功能或界面，都可以从一个清晰的起点开始。"
             />
 
             <div className="deploy-grid">
@@ -568,10 +646,10 @@ export default function App() {
           <div className="container">
             <div className="cta-panel">
               <div>
-                <span className="eyebrow">Open MedKit</span>
+                <span className="eyebrow">OpenMedKit</span>
                 <h2>从一句话录入开始，把家庭药箱整理成可搜索的系统。</h2>
                 <p>
-                  Open MedKit 适合先解决家里药品杂乱、快过期和找不到的问题，也保留了继续扩展成完整工具的空间。
+                  OpenMedKit 适合解决家里药品杂乱、快过期和找不到的问题，也保留了继续扩展成完整工具的空间。
                 </p>
               </div>
 
@@ -605,11 +683,26 @@ export default function App() {
           </div>
 
           <div className="site-footer__meta">
-            <a href="https://github.com/MonoYan/open-medkit" target="_blank" rel="noreferrer">
-              GitHub
-            </a>
-            <a href="#privacy">隐私说明</a>
-            <a href="#deploy">部署方式</a>
+            <div className="site-footer__links-row">
+              <a href="https://github.com/MonoYan/open-medkit" target="_blank" rel="noreferrer">
+                GitHub
+              </a>
+              <a href="#privacy">隐私说明</a>
+              <a href="#deploy">部署方式</a>
+            </div>
+            <div className="site-footer__author-row">
+              <span className="site-footer__author-label"></span>
+              <a
+                className="site-footer__x-link"
+                href="https://x.com/sensh85"
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label="作者 sensh85（X）"
+              >
+                <XLogo className="site-footer__x-icon" />
+                <span className="site-footer__x-handle">sensh85</span>
+              </a>
+            </div>
           </div>
         </div>
       </footer>
