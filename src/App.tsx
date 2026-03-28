@@ -677,7 +677,7 @@ export default function App() {
           <div className="site-footer__brand">
             <BrandMark />
             <div>
-              <strong>Open MedKit</strong>
+              <strong>OpenMedKit</strong>
               <span>家庭药箱管理，不必再像做库存盘点一样费劲。</span>
             </div>
           </div>
