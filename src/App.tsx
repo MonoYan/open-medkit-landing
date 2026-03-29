@@ -9,11 +9,13 @@ import {
   Eye,
   Lock,
   Pill,
+  Plug2,
   ScanSearch,
   Search,
   Send,
   SlidersHorizontal,
   Sparkles,
+  Terminal,
 } from 'lucide-react';
 
 type IconComponent = typeof Sparkles;
@@ -96,15 +98,52 @@ const heroCapabilityGroups: HeroCapabilityGroup[] = [
   },
   {
     title: '系统能力',
-    countLabel: '4 项可控特性',
+    countLabel: '5 项可控特性',
     tone: 'tech',
     items: [
+      { text: 'MCP Server', icon: Plug2, mono: true },
       { text: 'SQLite 存储', icon: Database, mono: true },
       { text: 'Telegram 推送', icon: Send, mono: true },
       { text: 'OpenAI 兼容', icon: Bot, mono: true },
       { text: '自部署可控', icon: Lock, mono: true },
     ],
   },
+];
+
+const mcpClients = [
+  { name: 'Claude Code', detail: '.mcp.json 自动识别' },
+  { name: 'Cursor', detail: '全局 / 项目级配置' },
+  { name: 'Claude Desktop', detail: 'Desktop config 接入' },
+  { name: 'OpenClaw', detail: 'Skill 系统调用' },
+];
+
+const MCP_CONFIG = `{
+  "mcpServers": {
+    "open-medkit": {
+      "command": "npx",
+      "args": ["tsx", "backend/src/mcp-server.ts"],
+      "env": {
+        "DB_PATH": "./backend/data/medicine.db"
+      }
+    }
+  }
+}`;
+
+const mcpExamples = [
+  { cmd: '帮我加个布洛芬缓释胶囊', tool: 'add_medicine' },
+  { cmd: '有没有快过期的药？', tool: 'list_medicines' },
+  { cmd: '把创可贴数量改成 15 片', tool: 'update_medicine' },
+  { cmd: '药箱统计看看', tool: 'get_stats' },
+];
+
+const mcpToolNames = [
+  'list_medicines',
+  'get_medicine',
+  'add_medicine',
+  'update_medicine',
+  'delete_medicine',
+  'get_stats',
+  'search_medicines',
 ];
 
 const deployCards = [
@@ -449,6 +488,7 @@ export default function App() {
           <nav className="site-nav" aria-label="主导航">
             <a href="#features">亮点</a>
             <a href="#workflow">流程</a>
+            <a href="#mcp">MCP</a>
             <a href="#deploy">部署</a>
             <a href="#privacy">隐私</a>
           </nav>
@@ -470,7 +510,7 @@ export default function App() {
           <div className="container hero-layout">
             <div className="hero-copy">
               <div className="hero-copy__intro">
-                <Tag>Open-source · Self-hosted · OpenAI Compatible</Tag>
+                <Tag>Open-source · Self-hosted · MCP Agent · OpenAI Compatible</Tag>
               </div>
 
               <h1>
@@ -587,6 +627,67 @@ export default function App() {
           </div>
         </section>
 
+        <section className="section-block" id="mcp">
+          <div className="container">
+            <SectionHeading
+              eyebrow="MCP Integration"
+              title="终端里说句话，药品就入库"
+              description="内置 MCP Server，让 Claude Code、Cursor 等 AI 客户端直接调用工具管理药箱——不需要打开浏览器。"
+            />
+
+            <div className="mcp-panel">
+              <div className="mcp-panel__left">
+                <div className="mcp-clients">
+                  {mcpClients.map((c) => (
+                    <div key={c.name} className="mcp-client">
+                      <Terminal size={16} />
+                      <div>
+                        <strong>{c.name}</strong>
+                        <span>{c.detail}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mcp-stats-row">
+                  <span className="mcp-badge">7 tools</span>
+                  <span className="mcp-badge">2 resources</span>
+                  <span className="mcp-badge">stdio transport</span>
+                </div>
+
+                <div className="mcp-tool-list">
+                  {mcpToolNames.map((t) => (
+                    <code key={t} className="mcp-tool-name">{t}</code>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mcp-panel__right">
+                <div className="mcp-code-block">
+                  <div className="mcp-code-chrome">
+                    <div className="demo-dots"><i /><i /><i /></div>
+                    <span>.mcp.json</span>
+                  </div>
+                  <pre className="mcp-code-body">{MCP_CONFIG}</pre>
+                </div>
+
+                <div className="mcp-examples">
+                  <div className="mcp-examples__hd">
+                    <Plug2 size={13} />
+                    对话示例
+                  </div>
+                  {mcpExamples.map((ex) => (
+                    <div key={ex.cmd} className="mcp-example">
+                      <span className="mcp-example__cmd">&gt; {ex.cmd}</span>
+                      <span className="mcp-example__tool">{ex.tool}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="section-block" id="deploy">
           <div className="container">
             <SectionHeading
@@ -649,7 +750,7 @@ export default function App() {
                 <span className="eyebrow">OpenMedKit</span>
                 <h2>从一句话录入开始，把家庭药箱整理成可搜索的系统。</h2>
                 <p>
-                  OpenMedKit 适合解决家里药品杂乱、快过期和找不到的问题，也保留了继续扩展成完整工具的空间。
+                  OpenMedKit 适合解决家里药品杂乱、快过期和找不到的问题。内置 MCP Server，还能让 AI 客户端直接管药箱。
                 </p>
               </div>
 
@@ -687,6 +788,7 @@ export default function App() {
               <a href="https://github.com/MonoYan/open-medkit" target="_blank" rel="noreferrer">
                 GitHub
               </a>
+              <a href="#mcp">MCP 接入</a>
               <a href="#privacy">隐私说明</a>
               <a href="#deploy">部署方式</a>
             </div>

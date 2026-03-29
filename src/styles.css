@@ -1001,6 +1001,194 @@ select {
   color: rgba(255, 248, 240, 0.74);
 }
 
+/* ====== MCP Section ====== */
+
+.mcp-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 28px;
+  margin-top: 40px;
+  padding: 32px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background:
+    linear-gradient(135deg, rgba(30, 25, 38, 0.97) 0%, rgba(38, 32, 28, 0.97) 100%);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.mcp-panel__left {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.mcp-clients {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.mcp-client {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.04);
+  transition: border-color 180ms ease, background 180ms ease;
+}
+
+.mcp-client:hover {
+  border-color: rgba(152, 120, 220, 0.3);
+  background: rgba(152, 120, 220, 0.06);
+}
+
+.mcp-client > svg {
+  flex-shrink: 0;
+  color: #b89eff;
+  margin-top: 3px;
+}
+
+.mcp-client strong {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff8f0;
+}
+
+.mcp-client span {
+  display: block;
+  font-size: 0.74rem;
+  color: rgba(255, 248, 240, 0.45);
+  margin-top: 2px;
+}
+
+.mcp-stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mcp-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(152, 120, 220, 0.22);
+  background: rgba(152, 120, 220, 0.08);
+  color: #b89eff;
+  font-family: "DM Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+}
+
+.mcp-tool-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mcp-tool-name {
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 248, 240, 0.6);
+  font-family: "DM Mono", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+}
+
+.mcp-panel__right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mcp-code-block {
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.mcp-code-chrome {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.mcp-code-chrome span {
+  font-family: "DM Mono", monospace;
+  font-size: 0.76rem;
+  color: rgba(255, 248, 240, 0.5);
+}
+
+.mcp-code-body {
+  margin: 0;
+  padding: 18px 20px;
+  font-family: "DM Mono", monospace;
+  font-size: 0.78rem;
+  line-height: 1.7;
+  color: #ddd4ec;
+  overflow-x: auto;
+}
+
+.mcp-examples {
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.18);
+  padding: 16px 20px;
+}
+
+.mcp-examples__hd {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  font-family: "DM Mono", monospace;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(255, 248, 240, 0.35);
+  margin-bottom: 12px;
+}
+
+.mcp-examples__hd svg {
+  color: #b89eff;
+}
+
+.mcp-example {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 9px 0;
+}
+
+.mcp-example + .mcp-example {
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.mcp-example__cmd {
+  font-size: 0.84rem;
+  color: rgba(255, 248, 240, 0.82);
+}
+
+.mcp-example__tool {
+  flex-shrink: 0;
+  font-family: "DM Mono", monospace;
+  font-size: 0.68rem;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: rgba(152, 120, 220, 0.12);
+  color: #b89eff;
+  white-space: nowrap;
+}
+
 .deploy-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1158,6 +1346,7 @@ select {
   .card-grid,
   .principle-grid,
   .cta-panel,
+  .mcp-panel,
   .site-footer__inner {
     grid-template-columns: 1fr;
     flex-direction: column;
@@ -1271,8 +1460,14 @@ select {
   .card-grid,
   .principle-grid,
   .workflow-cards,
-  .deploy-grid {
+  .deploy-grid,
+  .mcp-clients {
     grid-template-columns: 1fr;
+  }
+
+  .mcp-panel {
+    padding: 22px;
+    border-radius: 22px;
   }
 
   .demo-frame {
