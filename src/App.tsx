@@ -16,6 +16,7 @@ import {
   SlidersHorizontal,
   Sparkles,
   Terminal,
+  Brain
 } from 'lucide-react';
 
 type IconComponent = typeof Sparkles;
@@ -45,7 +46,7 @@ const featureCards: CardItem[] = [
   },
   {
     title: '自动过期提醒',
-    description: '即将到期和已经过期的药品会被高亮标记，Telegram 推送让家庭药箱保持始终在线。',
+    description: '即将到期和已经过期的药品会被高亮标记，Telegram / Discord / Lark 推送让家庭药箱保持始终在线。',
     icon: BellRing,
   },
   {
@@ -98,14 +99,15 @@ const heroCapabilityGroups: HeroCapabilityGroup[] = [
   },
   {
     title: '系统能力',
-    countLabel: '5 项可控特性',
+    countLabel: '6 项可控特性',
     tone: 'tech',
     items: [
       { text: 'MCP Server', icon: Plug2, mono: true },
       { text: 'SQLite 存储', icon: Database, mono: true },
-      { text: 'Telegram 推送', icon: Send, mono: true },
-      { text: 'OpenAI 兼容', icon: Bot, mono: true },
+      { text: 'OpenClaw Skill 调用', icon: Brain, mono: true },
       { text: '自部署可控', icon: Lock, mono: true },
+      { text: 'OpenAI 兼容', icon: Bot, mono: true },
+      { text: 'Telegram / Discord / Lark 推送', icon: Send, mono: true },
     ],
   },
 ];
